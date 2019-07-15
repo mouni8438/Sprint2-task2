@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+
+  dev:
+    container_name: angular-hello-world_dev
+    image: ${DOCKER_IMAGE_DEV:-teracy/angular-cli:1.0.0-rc.2}
+    working_dir: /opt/app
+    command: sh run-dev.sh
+    environment:
+      NODE_ENV: development
+      VIRTUAL_HOST: dev.ahw.acme.dev
+      HTTPS_METHOD: noredirect # support both http and https
+    volumes:
+      - .:/opt/app
+    ports:
+      - "4200"
+    restart: unless-stopped
+    # to get this work with https://github.com/jwildder/nginx-proxy
+    # related: https://github.com/jwilder/nginx-proxy/issues/305
+    network_mode: bridge
